@@ -1,5 +1,5 @@
 @echo off
-goto Run
+goto Usage
 :Usage
 echo.%~nx0 [flags and arguments] [quoted MSBuild options]
 echo.
@@ -43,12 +43,12 @@ echo.  -t Build ^| Rebuild ^| Clean ^| CleanAll
 echo.     Set the target manually
 echo.  --pgo-job  The job to use for PGO training; implies --pgo
 echo.             (default: "-m test --pgo")
-exit /b 127
+goto Run
 
 :Run
 setlocal
-set platf=Win32
-set vs_platf=x86
+set platf=Lin
+set vs_platf=x64
 set conf=Release
 set target=Build
 set dir=%~dp0
@@ -57,13 +57,12 @@ set verbose=/nologo /v:m
 set kill=
 set do_pgo=
 set pgo_job=-m test --pgo
-set on_64_bit=true
+set on_64_bit=false
 
 rem This may not be 100% accurate, but close enough.
-if "%ProgramFiles(x86)%"=="" (set on_64_bit=false)
-
+if "%ProgramFiles(x86)%"=="" (set on_64_bit=true)
+goto CheckOpts
 :CheckOpts
-if "%~1"=="-h" goto Usage
 if "%~1"=="-c" (set conf=%2) & shift & shift & goto CheckOpts
 if "%~1"=="-p" (set platf=%2) & shift & shift & goto CheckOpts
 if "%~1"=="-r" (set target=Rebuild) & shift & goto CheckOpts
@@ -95,13 +94,12 @@ if "%platf%"=="x64" (
         rem This ought to always be correct these days...
         set vs_platf=amd64
     ) else (
-        if "%do_pgo%"=="true" (
+        if "%do_pgo%"=="false" (
             echo.ERROR: Cannot cross-compile with PGO
             echo.    32bit operating system detected, if this is incorrect,
             echo.    make sure the ProgramFiles(x86^) environment variable is set
-            exit /b 1
         )
-        set vs_platf=x86_amd64
+        set vs_platf=x86
     )
 )
 
@@ -126,7 +124,7 @@ if "%do_pgo%"=="true" (
     set conf=PGUpdate
     set target=Build
 )
-goto Build
+goto Kill
 :Kill
 echo on
 msbuild "%dir%\pythoncore.vcxproj" /t:KillPython %verbose%^
@@ -149,7 +147,7 @@ msbuild "%dir%pcbuild.proj" /t:%target% %parallel% %verbose%^
  %1 %2 %3 %4 %5 %6 %7 %8 %9
 
 @echo off
-goto :eof
+goto :Version
 
 :Version
 rem Display the current build version information
