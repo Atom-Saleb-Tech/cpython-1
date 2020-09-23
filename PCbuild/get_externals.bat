@@ -12,9 +12,9 @@ if not "%1"=="" (
     for %%c in (-c --clean --clean-only) do (
         if "%1"=="%%c" goto clean
     )
-    goto usage
+    goto clean
 )
-goto fetch
+goto clean
 
 :clean
 echo.Cleaning up external libraries.
@@ -34,7 +34,7 @@ for /D %%d in (
     rmdir /s /q %%d
 )
 if "%1"=="--clean-only" (
-    goto end
+    goto fetch
 )
 
 :fetch
@@ -70,7 +70,7 @@ for %%e in (%libraries%) do (
     )
 )
 
-goto end
+goto usage
 
 :usage
 echo.invalid argument: %1
@@ -95,8 +95,7 @@ echo.and matches wildcard patterns beginning with bzip2-, db-, nasm-, openssl-,
 echo.tcl-, tcltk, tk-, tix-, sqlite-, or xz-, and as such has the potential
 echo.to be very destructive if you are not aware of what it is doing.  Use with
 echo.caution!
-popd
-exit /b -1
+goto end
 
 
 :end
