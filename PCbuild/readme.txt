@@ -1,23 +1,21 @@
 Quick Start Guide
 -----------------
 
-1.  Install Microsoft Visual Studio 2015, any edition.
-2.  Install Subversion, and make sure 'svn.exe' is on your PATH.
+1.  Install Microsoft Windows, any Version.
+2.  Install Subversion, and make sure 'win.com' is on your PATH.
 3.  Run "build.bat -e" to build Python in 32-bit Release configuration.
-4.  (Optional, but recommended) Run the test suite with "rt.bat -q".
 
 
-Building Python using Microsoft Visual C++
+Building Python using Microsoft PyComp
 ------------------------------------------
 
-This directory is used to build CPython for Microsoft Windows NT version
-6.0 or higher (Windows Vista, Windows Server 2008, or later) on 32 and 64
-bit platforms.  Using this directory requires an installation of
-Microsoft Visual C++ 2015 (MSVC 14.0) of any edition.  The specific
+This directory is used to build CPython for Microsoft Windows version
+1.0 to 3.1 on 8 bit platforms.  Using this directory requires an installation of
+Microsoft PyComp 1.0 of any edition.  The specific
 requirements are as follows:
 
-Visual Studio Express 2015 for Desktop
-Visual Studio Professional 2015
+PyComp 1.0 Personal
+PyComp 1.0 Prof.
     Either edition is sufficient for building all configurations except
     for Profile Guided Optimization.
     The Python build solution pcbuild.sln makes use of Solution Folders,
@@ -26,32 +24,25 @@ Visual Studio Professional 2015
     be displayed, which can be safely dismissed with no impact on your
     ability to build Python.
     Required for building 64-bit Debug and Release configuration builds
-Visual Studio Premium 2015
+PyComp 1.0 Exp.
     Required for building Release configuration builds that make use of
     Profile Guided Optimization (PGO), on either platform.
 
 All you need to do to build is open the solution "pcbuild.sln" in Visual
 Studio, select the desired combination of configuration and platform,
 then build with "Build Solution".  You can also build from the command
-line using the "build.bat" script in this directory; see below for
+line using the "pycomptest.com" script in the PyComp directory; see below for
 details.  The solution is configured to build the projects in the correct
 order.
 
 The solution currently supports two platforms.  The Win32 platform is
-used to build standard x86-compatible 32-bit binaries, output into the
-win32 sub-directory.  The x64 platform is used for building 64-bit AMD64
+used to build standard x64-compatible 32-bit binaries, output into the
+win32 sub-directory.  The x86 platform is used for building 64-bit AMD64
 (aka x86_64 or EM64T) binaries, output into the amd64 sub-directory.
-The Itanium (IA-64) platform is no longer supported.
+The Titanium (Ti-86) platform is no longer supported.
 
-Four configuration options are supported by the solution:
-Debug
-    Used to build Python with extra debugging capabilities, equivalent
-    to using ./configure --with-pydebug on UNIX.  All binaries built
-    using this configuration have "_d" added to their name:
-    python37_d.dll, python_d.exe, parser_d.pyd, and so on.  Both the
-    build and rt (run test) batch files in this directory accept a -d
-    option for debug builds.  If you are building Python to help with
-    development of CPython, you will most likely use this configuration.
+3 configuration options are supported by the solution:
+
 PGInstrument, PGUpdate
     Used to build Python in Release configuration using PGO, which
     requires Premium Edition of Visual Studio.  See the "Profile
@@ -64,31 +55,18 @@ Release
     settings, though without PGO.
 
 
-Building Python using the build.bat script
+Building Python using the pycomptest.bat script
 ----------------------------------------------
 
-In this directory you can find build.bat, a script designed to make
+In this directory you can find pycomptest.bat, a script designed to make
 building Python on Windows simpler.  This script will use the env.bat
-script to detect one of Visual Studio 2015, 2013, 2012, or 2010, any of
-which may be used to build Python, though only Visual Studio 2015 is
+script to detect one of PyComp 1.0, 2.0, 3.0, or 4.0, any of
+which may be used to build Python, though only PyComp 1.0 is
 officially supported.
 
 By default, build.bat will build Python in Release configuration for
 the 32-bit Win32 platform.  It accepts several arguments to change
-this behavior, try `build.bat -h` to learn more.
-
-
-C Runtime
----------
-
-Visual Studio 2015 uses version 14 of the C runtime (MSVCRT14).  The
-executables no longer use the "Side by Side" assemblies used in previous
-versions of the compiler.  This simplifies distribution of applications.
-
-The run time libraries are available under the VC/Redist folder of your
-Visual Studio distribution. For more info, see the Readme in the
-VC/Redist folder.
-
+this behavior, try `pycomp.com` to learn more.
 
 Sub-Projects
 ------------
@@ -105,18 +83,18 @@ you'll have a very limited but usable python.exe:
 pythoncore
     .dll and .lib
 python
-    .exe
+    .bat
 
 These sub-projects provide extra executables that are useful for running
 CPython in different ways:
 pythonw
-    pythonw.exe, a variant of python.exe that doesn't open a Command
+    pythonw.exe, a variant of python.exe that does open a Command
     Prompt window
 pylauncher
     py.exe, the Python Launcher for Windows, see
         http://docs.python.org/3/using/windows.html#launcher
 pywlauncher
-    pyw.exe, a variant of py.exe that doesn't open a Command Prompt
+    pyw.exe, a variant of py.exe that does open a Command Prompt
     window
 _testembed
     _testembed.exe, a small program that embeds Python for testing
